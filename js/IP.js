@@ -43,6 +43,10 @@ class IP{
     getNetMask(){
         return this.address_classifier.netmask;
     }
+    
+    getName(){
+        return this.address_classifier.name;
+    }
 
     calcule(){
         this.address_classifier=
