@@ -58,7 +58,7 @@ class Subneteo{
 
             let ip_util_2=new IP(ip);
             ip_util_2.setOctecto(4,((index+1)*this.net_jump)-2);
-            row.ip_util_1=ip_util_2;
+            row.ip_util_2=ip_util_2;
 
             let ip_brodcast=new IP(ip);
             ip_brodcast.setOctecto(4,((index+1)*this.net_jump)-1);
