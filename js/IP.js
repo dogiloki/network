@@ -56,15 +56,15 @@ class IP{
         Util.range(this.getOctecto(1),224,239)?IP.ADDRESS_CLASSIFIERS.D:IP.ADDRESS_CLASSIFIERS.NONE;
         this.address_classifier.netmask.split(".").forEach((octeto)=>{
             if(octeto=="255"){
-                this.octetos_red.push(octeto);
+                this.octetos_red.push(Number(octeto));
             }else{
-                this.octetos_host.push(octeto);
+                this.octetos_host.push(Number(octeto));
             }
         });
     }
 
-    setOctecto(num,value){
-        this.octetos[num-1]=value;
+    setOctecto(num,value,replace=false){
+        this.octetos[num-1]=Number(value);
     }
 
     getOctecto(num){
@@ -73,6 +73,14 @@ class IP{
 
     getOctectos(){
         return this.octetos;
+    }
+
+    getOctectosRed(){
+        return this.octetos_red;
+    }
+
+    getOctectosHost(){
+        return this.octetos_host;
     }
 
     getAddressClassifier(){
