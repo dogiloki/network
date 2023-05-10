@@ -2,7 +2,7 @@ class ModelTable{
 
     constructor(){
         this.columns={};
-        this.rows={};
+        this.rows=[];
     }
 
     getColumns(){
@@ -26,15 +26,11 @@ class ModelTable{
     }
 
     getRow(key){
-        return this.row[key]??null;
+        return this.rows[key]??null;
     }
 
     addRow(row){
-        let new_row;
-        row.array.forEach((item,key)=>{
-            new_row[key]=item[key]??null;
-        });
-        this.rows.push(new_row);
+        this.rows.push(row);
     }
 
     countRows(){

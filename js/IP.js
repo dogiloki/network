@@ -29,7 +29,7 @@ class IP{
     });
 
     constructor(...bits){
-        this.octetos=(bits[0].indexOf(".")==-1)?bits:bits[0].replaceAll(" ","").split(".");
+        this.octetos=((""+bits[0]).indexOf(".")==-1)?bits:bits[0].replaceAll(" ","").split(".");
         this.address_classifier;
         this.octetos_red=[];
         this.octetos_host=[];
@@ -37,7 +37,7 @@ class IP{
     }
 
     getAddress(){
-        return this.octetos.join();
+        return this.octetos.join(".");
     }
 
     calcule(){
@@ -53,6 +53,10 @@ class IP{
                 this.octetos_host.push(octeto);
             }
         });
+    }
+
+    setOctecto(num,value){
+        this.octetos[num-1]=value;
     }
 
     getOctecto(num){
