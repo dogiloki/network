@@ -17,6 +17,7 @@ form.addEventListener('submit',(evt)=>{
 });
 
 function generateTable(){
+    this.content_table.innerHTML="";
     let table=this.subneteo.table;
     let columns=table.getColumns();
     let rows=table.getRows();

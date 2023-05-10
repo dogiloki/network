@@ -10,7 +10,7 @@ class Subneteo{
 
     static bits(bit=0){
         let bits=[];
-        for(let index=7; index>=bit; index--){
+        for(let index=7; index>7-bit; index--){
             bits.push(Math.pow(2,index));
         }
         return bits;
