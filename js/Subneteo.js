@@ -1,7 +1,7 @@
 class Subneteo{
 
-    static numberBits(subredes,bits=0){
-        return Subneteo.numberDevices(bits)>=subredes?bits:Subneteo.numberBits(subredes,bits+1);
+    static numberBits(subnets,bits=0){
+        return Subneteo.numberDevices(bits)>=subnets?bits:Subneteo.numberBits(subnets,bits+1);
     }
 
     static numberDevices(bits){
@@ -16,15 +16,15 @@ class Subneteo{
         return bits;
     }
 
-    constructor(ip,subredes){
+    constructor(ip,subnets){
         this.table=new ModelTable();
         this.ip=(ip instanceof IP)?ip:new IP(ip);
-        this.subredes=subredes;
-        this.number_bits=Subneteo.numberBits(this.subredes);
+        this.subnets=subnets;
+        this.number_bits=Subneteo.numberBits(this.subnets);
         this.number_devices=Subneteo.numberDevices(this.number_bits);
         this.net_jump;
+        this.netmask;
         this.calculeSubmask();
-        this.generateTable();
     }
 
     calculeSubmask(){
@@ -36,14 +36,14 @@ class Subneteo{
         this.net_jump=256-bits;
     }
 
-    generateTable(){
+    generateTable(action){
         this.table.addColumn("Subred","subred");
         this.table.addColumn("IP de red","ip_red");
         this.table.addColumn("1ar IP útil","ip_util_1");
         this.table.addColumn("2ar IP útil","ip_util_2");
         this.table.addColumn("IP de brodcast","ip_brodcast");
         let ip=this.ip.getAddress();
-        for(let index=0; index<this.subredes; index++){
+        for(let index=0; index<this.subnets; index++){
             let row={};
 
             row.subred=index+1;
@@ -65,6 +65,7 @@ class Subneteo{
             row.ip_brodcast=ip_brodcast;
 
             this.table.addRow(row);
+            action(this.table.getColumns(),row,index);
         }
     }
 

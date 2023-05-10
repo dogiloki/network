@@ -40,6 +40,10 @@ class IP{
         return this.octetos.join(".");
     }
 
+    getNetMask(){
+        return this.address_classifier.netmask;
+    }
+
     calcule(){
         this.address_classifier=
         Util.range(this.getOctecto(1),1,127)?IP.ADDRESS_CLASSIFIERS.A:
