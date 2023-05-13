@@ -54,33 +54,22 @@ class Subneteo{
             let row={};
 
             row.subred=index+1;
-            
-            let num_octecto;
-
             let ip_red=new IP(ip);
-            num_octecto=5-this.ip.getOctectosHost().length;
-            ip_red.setOctecto(num_octecto,index*this.net_jump);
+            ip_red.add(this.net_jump*index);
             row.ip_red=ip_red;
 
             let ip_util_1=new IP(ip);
-            ip_util_1.setOctecto(num_octecto,index*this.net_jump);
-            ip_util_1.setOctecto(this.ip.getOctectos().length,ip_util_1.getOctecto(this.ip.getOctectos().length)+1);
+            ip_util_1.setOctectosHost(ip_red.getOctectosHost());
+            ip_util_1.add(1,Util.DIRECTIONS.RIGHT);
             row.ip_util_1=ip_util_1;
 
             let ip_brodcast=new IP(ip);
-            ip_brodcast.setOctecto(num_octecto,((index+1)*this.net_jump)-1);
-            ip_brodcast.setOctecto(num_octecto,ip_red.getOctecto(num_octecto)+3);
-            if(this.ip.getAddressClassifier()==IP.ADDRESS_CLASSIFIERS.C){
-                ip_brodcast.setOctecto(this.ip.getOctectos().length,((index+1)*this.net_jump)-1);
-            }else
-            if(this.ip.getAddressClassifier()==IP.ADDRESS_CLASSIFIERS.B){
-                ip_brodcast.setOctecto(this.ip.getOctectos().length,255);
-            }
+            ip_brodcast.add(this.net_jump*(index+1)-1);
             row.ip_brodcast=ip_brodcast;
 
             let ip_util_2=new IP(ip);
-            ip_util_2.setOctecto(num_octecto,ip_brodcast.getOctecto(num_octecto));
-            ip_util_2.setOctecto(this.ip.getOctectos().length,ip_brodcast.getOctecto(this.ip.getOctectos().length)-1);
+            ip_util_2.setOctectosHost(ip_brodcast.getOctectosHost());
+            ip_util_2.sub(1,Util.DIRECTIONS.RIGHT);
             row.ip_util_2=ip_util_2;
 
             this.table.addRow(row);
