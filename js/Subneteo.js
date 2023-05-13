@@ -65,6 +65,12 @@ class Subneteo{
 
             let ip_brodcast=new IP(ip);
             ip_brodcast.add(this.net_jump*(index+1)-1);
+            for(let index_octeto=1; index_octeto<=ip_brodcast.getOctectosHost().length; index_octeto++){
+                let octeto=ip_brodcast.getOctectoHost(index_octeto);
+                Util.where(octeto==0,()=>{
+                    ip_brodcast.setOctectoHost(index_octeto,255);
+                });
+            }
             row.ip_brodcast=ip_brodcast;
 
             let ip_util_2=new IP(ip);

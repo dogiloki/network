@@ -34,8 +34,8 @@ class IP{
             return Number(octeto);
         });
         this.address_classifier;
-        this.octetos_red=[];
-        this.octetos_host=[];
+        this.indices_red=[];
+        this.indices_host=[];
         this.calcule();
     }
 
@@ -59,9 +59,9 @@ class IP{
         Util.range(this.getOctecto(1),224,239)?IP.ADDRESS_CLASSIFIERS.D:IP.ADDRESS_CLASSIFIERS.NONE;
         this.address_classifier.netmask.split(".").forEach((octeto,index)=>{
             if(octeto=="255"){
-                this.octetos_red.push(this.octetos[index]);
+                this.indices_red.push(index+1);
             }else{
-                this.octetos_host.push(this.octetos[index]);
+                this.indices_host.push(index+1);
             }
         });
     }
@@ -75,7 +75,7 @@ class IP{
     }
 
     operation(operator,quantity,direction){
-        let octetos=this.octetos_host;
+        let octetos=this.getOctectosHost();
         for(let index=0; index<octetos.length; index++){
             if(direction==Util.DIRECTIONS.LEFT){
                 index=index;
@@ -110,42 +110,72 @@ class IP{
                 break;
             }
         }
-        this.octetos=this.octetos_red.concat(octetos);
+        this.setOctectosHost(octetos);
         return this;
     }
 
-    setOctecto(num,value,replace=false){
-        this.octetos[num-1]=Number(value);
+    setOctecto(index,octeto){
+        this.octetos[index-1]=octeto;
+    }
+
+    setOctectos(octetos){
+        this.octetos=octetos;
+    }
+
+    setOctectoRed(index,octeto){
+        this.setOctecto(this.indices_red[index-1],octeto);
     }
 
     setOctectosRed(octetos){
-        this.octetos_red=octetos;
-        this.octetos=this.octetos_red.concat(this.octetos_host);
+        let index=1;
+        for(let octeto of octetos){
+            this.setOctectoRed(index,octeto);
+            index++;
+        }
+    }
+
+    setOctectoHost(index,octeto){
+        this.setOctecto(this.indices_host[index-1],octeto);
     }
 
     setOctectosHost(octetos){
-        this.octetos_host=octetos;
-        this.octetos=this.octetos_red.concat(this.octetos_host);
+        let index=1;
+        for(let octeto of octetos){
+            this.setOctectoHost(index,octeto);
+            index++;
+        }
     }
-
-    getOctecto(num){
-        return this.octetos[num-1]??"";
+    
+    getOctecto(index){
+        return this.octetos[index-1];
     }
 
     getOctectos(){
         return this.octetos;
     }
 
+    getOctectoRed(index){
+        return this.getOctecto(this.indices_red[index-1]);
+    }
+
     getOctectosRed(){
-        return this.octetos_red;
+        let octetos=[];
+        for(let index of this.indices_red){
+            octetos.push(this.getOctecto(index));
+        }
+        return octetos;
+    }
+
+    getOctectoHost(index){
+        return this.getOctecto(this.indices_host[index-1]);
     }
 
     getOctectosHost(){
-        return this.octetos_host;
-    }
-
-    getAddressClassifier(){
-        return this.address_classifier;
+        let octetos=[];
+        for(let index of this.indices_host){
+            octetos.push(this.getOctecto(index));
+        }
+        return octetos;
     }
 
 }

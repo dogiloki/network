@@ -40,4 +40,10 @@ class Util{
         return num>=min && num<=max;
     }
 
+    static where(conditional,action){
+        if(conditional){
+            action();
+        }
+    }
+
 }
