@@ -39,8 +39,8 @@ class Subneteo{
     generateTable(action){
         this.table.addColumn("Subred","subred");
         this.table.addColumn("IP de red","ip_red");
-        this.table.addColumn("1ar IP útil","ip_util_1");
-        this.table.addColumn("2ar IP útil","ip_util_2");
+        this.table.addColumn("IP inicial","ip_util_1");
+        this.table.addColumn("IP final","ip_util_2");
         this.table.addColumn("IP de brodcast","ip_brodcast");
         let ip=this.ip.getAddress();
         /**

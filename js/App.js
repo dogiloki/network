@@ -44,7 +44,7 @@ function generateTable(){
     });
     this.content_info.innerHTML="";
     this.content_info.appendChild(this.createElement("p","IP: "+this.subneteo.ip.getAddress()));
-    this.content_info.appendChild(this.createElement("p","Submascara original: "+this.subneteo.ip.getNetMask()));
+    this.content_info.appendChild(this.createElement("p","Submáscara original: "+this.subneteo.ip.getNetMask()));
     this.content_info.appendChild(this.createElement("p","Clasificación de red: "+this.subneteo.ip.getName()));
     this.content_info.appendChild(this.createElement("p","Número de bits: "+this.subneteo.number_bits));
     this.content_info.appendChild(this.createElement("p","Total de dispositivos: "+this.subneteo.number_devices));
