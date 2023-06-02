@@ -3,7 +3,7 @@ class IP{
     static ADDRESS_CLASSIFIERS=Object.freeze({
         A:{
             id:Symbol(),
-            name:"A (No sé)",
+            name:"A (Global)",
             netmask:"255.0.0.0"
         },
         B:{
