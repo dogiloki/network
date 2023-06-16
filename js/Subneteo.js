@@ -32,7 +32,7 @@ class Subneteo{
             return prev_bit+bit;
         });
         this.number_devices=Subneteo.numberDevices(this.ip.getOctectosHost().length*8-this.number_bits);
-        this.netmask=this.ip.getOctectosRed().join(".")+"."+bits;
+        this.netmask=bits;
         this.net_jump=256-bits;
     }
 
