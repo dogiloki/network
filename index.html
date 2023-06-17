@@ -5,24 +5,21 @@
 <html>
 <body>
 
-    <form id="form">
+    <form id="form_ip">
         <label>
-            Dirección IP
-            <input type="number" name="ip_1">.
-            <input type="number" name="ip_2">.
-            <input type="number" name="ip_3">.
-            <input type="number" name="ip_4">
+            <span>Dirección IP</span>
+            <input type="text" name="ip">
         </label>
         <label>
-            Subredes
+            <span>Subredes</span>
             <input type="number" name="subredes">
         </label>
-        <input type="submit" value="Calcular">
+        <input type="submit" value="Agregar">
     </form>
 
-    <section id="content_info"></section>
+    <table id="table_ip"></table>
 
-    <table id="content_table" border="1"></table>
+    <section id="content_subneteos"></section>
 
 </body>
 </html>
@@ -31,4 +28,5 @@
 <script src="js/IP.js"></script>
 <script src="js/ModelTable.js"></script>
 <script src="js/Subneteo.js"></script>
+<script src="js/Network.js"></script>
 <script src="js/App.js"></script>

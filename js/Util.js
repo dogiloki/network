@@ -36,6 +36,10 @@ class Util{
         }
     };
 
+    static modal(content,show=null){
+        content.style.display=(show==null)?(content.style.display=="none"?"":"none"):(show?"":"none");
+    }
+
     static range(num,min,max){
         return num>=min && num<=max;
     }
