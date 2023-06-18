@@ -1,11 +1,5 @@
 class Network{
 
-    static storage_key="network";
-
-	static delete(){
-		localStorage.setItem(Network.storage_key,null);	
-	}
-
     constructor(obj=null){
         this.ips=[];
         if(obj!=null){

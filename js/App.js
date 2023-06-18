@@ -1,26 +1,36 @@
 class App{
 
+    static storage_key="network";
+
     static save(){
-		localStorage.setItem(Network.storage_key,JSON.stringify(App.network));
+		localStorage.setItem(App.storage_key,JSON.stringify(App.network));
 	}
 
 	static load(){
         App.network=new Network(
-            JSON.parse(localStorage.getItem(Network.storage_key))
+            JSON.parse(localStorage.getItem(App.storage_key))
         );
+	}
+
+    static delete(){
+		localStorage.setItem(App.storage_key,null);	
+        App.network=new Network();
 	}
 
     static network;
 
     constructor(){
         this.content=Object.freeze({
-            ip:{
-                form:document.getElementById('form_ip'),
-                table:document.getElementById('table_ip')
+            btns:{
+                save: document.getElementById('btn-save'),
+                clear: document.getElementById('btn-clear'),
             },
-            subneteo:{
-                section:document.getElementById('content_subneteos'),
-                tables:[] // table, obj
+            ip:{
+                form: document.getElementById('form-ip'),
+                table: document.getElementById('table-ip')
+            },
+            templates:{
+                window: document.getElementById('template-window').content
             }
         });
         this.setEvents();
@@ -35,6 +45,17 @@ class App{
             });
             this.loadTableIPs();
         });
+        this.content.btns.save.addEventListener('click',()=>{
+            App.save();
+        });
+        this.content.btns.clear.addEventListener('click',()=>{
+            App.delete();
+            this.loadInit();
+        });
+        this.loadInit();
+    }
+
+    loadInit(){
         this.loadTableIPs();
     }
 
@@ -74,6 +95,51 @@ class App{
         }
     }
 
+    loadWindow(frame,title,append=false){
+        new Template(
+            this.content.templates.window,
+            document.body,
+            new TemplateAction(
+                ["window","frame","title","btn-close","bar-title"],
+                (elements)=>{
+                    elements.window.setAttribute('title',title);
+                    elements.title.textContent=title;
+                    elements.btn_close.addEventListener('click',()=>{
+                        Util.modal(elements.window,false);
+                    });
+                    if(!append){
+                        elements.frame.innerHTML="";
+                    }
+                    elements.frame.appendChild(frame);
+                    elements.bar_title.addEventListener('mousedown',(evt)=>{
+                        let x=evt.clientX;
+                        let y=evt.clientY;
+                        let top=elements.window.offsetTop;
+                        let left=elements.window.offsetLeft;
+                        let width=elements.window.offsetWidth;
+                        let height=elements.window.offsetHeight;
+                        let mousemove=(evt)=>{
+                            let top_=top+evt.clientY-y;
+                            let left_=left+evt.clientX-x;
+                            if(top_>=0&&top_<=window.innerHeight-height){
+                                elements.window.style.top=top_+"px";
+                            }
+                            if(left_>=0&&left_<=window.innerWidth-width){
+                                elements.window.style.left=left_+"px";
+                            }
+                        };
+                        let mouseup=(evt)=>{
+                            window.removeEventListener('mousemove',mousemove);
+                            window.removeEventListener('mouseup',mouseup);
+                        };
+                        window.addEventListener('mousemove',mousemove);
+                        window.addEventListener('mouseup',mouseup);
+                    });
+                }
+            )
+        );
+    }
+
     loadTableSubneteo(ip,subredes){
         let subneteo=new Subneteo(ip,subredes);
         let table=document.createElement("table");
@@ -97,10 +163,7 @@ class App{
             ]);
             table.appendChild(tr);
         });
-        this.content.subneteo.tables.push({
-            table:table,
-            obj:subneteo
-        });
+        this.loadWindow(table,"Subneteo - "+ip);
     }
 
     createElement(type,value=null){

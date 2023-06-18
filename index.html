@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <head>
     <title>Subneteo</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <html>
 <body>
 
-    <form id="form_ip">
+    <template id="template-window">
+        <section class="window" id="window">
+            <div class="bar-title" id="bar-title">
+                <div class="title" id="title">Subneteos</div>
+                <div class="btn-close" id="btn-close">X</div>
+            </div>
+            <div class="frame" id="frame"></div>
+        </section>
+    </template>
+
+    <button id="btn-save">Guardar</button>
+    <button id="btn-clear">Limpiar</button>
+
+    <form id="form-ip">
         <label>
             <span>Dirección IP</span>
             <input type="text" name="ip">
@@ -17,9 +31,7 @@
         <input type="submit" value="Agregar">
     </form>
 
-    <table id="table_ip"></table>
-
-    <section id="content_subneteos"></section>
+    <table id="table-ip"></table>
 
 </body>
 </html>
@@ -29,4 +41,5 @@
 <script src="js/ModelTable.js"></script>
 <script src="js/Subneteo.js"></script>
 <script src="js/Network.js"></script>
+<script src="js/Template.js"></script>
 <script src="js/App.js"></script>
