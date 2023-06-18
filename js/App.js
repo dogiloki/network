@@ -119,6 +119,8 @@ class App{
                         elements.frame.innerHTML="";
                     }
                     elements.frame.appendChild(frame);
+                    elements.window.style.top="0px";
+                    elements.window.style.right="0px";
                     elements.bar_title.addEventListener('mousedown',(evt)=>{
                         this.total_windows++;
                         elements.window.style.zIndex=this.total_windows;
