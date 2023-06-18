@@ -20,6 +20,7 @@ class App{
     static network;
 
     constructor(){
+        this.total_windows=0;
         this.content=Object.freeze({
             btns:{
                 save: document.getElementById('btn-save'),
@@ -96,22 +97,27 @@ class App{
     }
 
     loadWindow(frame,title,append=false){
+        this.total_windows++;
         new Template(
             this.content.templates.window,
             document.body,
             new TemplateAction(
                 ["window","frame","title","btn-close","bar-title"],
                 (elements)=>{
+                    elements.window.setAttribute('id','window-'+this.total_windows);
                     elements.window.setAttribute('title',title);
                     elements.title.textContent=title;
                     elements.btn_close.addEventListener('click',()=>{
-                        Util.modal(elements.window,false);
+                        document.body.removeChild(elements.window);
+                        this.total_windows--;
                     });
                     if(!append){
                         elements.frame.innerHTML="";
                     }
                     elements.frame.appendChild(frame);
                     elements.bar_title.addEventListener('mousedown',(evt)=>{
+                        this.total_windows++;
+                        elements.window.style.zIndex=this.total_windows;
                         let x=evt.clientX;
                         let y=evt.clientY;
                         let top=elements.window.offsetTop;

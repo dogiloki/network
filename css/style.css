@@ -25,6 +25,7 @@
     align-items: center;
     position: absolute;
     color: #353535;
+    cursor: default;
 }
 .bar-title .title{
     font-size: 20px;
