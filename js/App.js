@@ -30,6 +30,10 @@ class App{
                 form: document.getElementById('form-ip'),
                 table: document.getElementById('table-ip')
             },
+            subneteo:{
+                template: document.getElementById('template-subneteo').content,
+                datas: [] // section:[document.section], subneteo:Subneteo
+            },
             templates:{
                 window: document.getElementById('template-window').content
             }
@@ -42,7 +46,7 @@ class App{
             evt.preventDefault();
             App.network.addIP({
                 ip:this.content.ip.form['ip'].value,
-                subredes:this.content.ip.form['subredes'].value
+                subnets:this.content.ip.form['subnets'].value
             });
             this.loadTableIPs();
         });
@@ -76,7 +80,7 @@ class App{
             this.content.ip.table.appendChild(
                 this.createElement("tr",[
                     this.createElement("td",ip.ip),
-                    this.createElement("td",ip.subredes),
+                    this.createElement("td",ip.subnets),
                     this.createElement("button",(content)=>{
                         content.textContent="Eliminar";
                         content.addEventListener('click',()=>{
@@ -87,7 +91,7 @@ class App{
                     this.createElement("button",(content)=>{
                         content.textContent="Subneteo",
                         content.addEventListener('click',()=>{
-                            this.loadTableSubneteo(ip.ip,ip.subredes);
+                            this.loadTableSubneteo(ip.ip,ip.subnets);
                         });
                     })
                 ])
@@ -101,7 +105,7 @@ class App{
         new Template(
             this.content.templates.window,
             document.body,
-            new TemplateAction(
+            new TemplateElement(
                 ["window","frame","title","btn-close","bar-title"],
                 (elements)=>{
                     elements.window.setAttribute('id','window-'+this.total_windows);
@@ -146,8 +150,15 @@ class App{
         );
     }
 
-    loadTableSubneteo(ip,subredes){
-        let subneteo=new Subneteo(ip,subredes);
+    loadTableSubneteo(ip,subnets){
+        // Verficar si ya se genero la tabla de subneteo
+        for(let data of this.content.subneteo.datas){
+            if(data.subneteo.ip.getAddress()==ip && data.subneteo.subnets==subnets){
+                this.loadWindow(data.section.cloneNode(true),"Subneteo - "+ip);
+                return;
+            }
+        }
+        let subneteo=new Subneteo(ip,subnets);
         let table=document.createElement("table");
         subneteo.generateTable((columns,row,index)=>{
             if(index==0){
@@ -169,7 +180,31 @@ class App{
             ]);
             table.appendChild(tr);
         });
-        this.loadWindow(table,"Subneteo - "+ip);
+        let section=document.createElement("section");
+        this.content.subneteo.datas.push({
+            section:section,
+            subneteo:subneteo
+        });
+        new Template(
+            this.content.subneteo.template,
+            section,
+            new TemplateElement(
+                ["content-info","content-table"],
+                (elements)=>{
+                    elements.content_info.innerHTML="";
+                    elements.content_table.innerHTML="";
+                    elements.content_info.appendChild(this.createElement("p","IP: "+subneteo.ip.getAddress()));
+                    elements.content_info.appendChild(this.createElement("p","Submáscara original: "+subneteo.ip.getNetMask()));
+                    elements.content_info.appendChild(this.createElement("p","Clasificación de red: "+subneteo.ip.getName()));
+                    elements.content_info.appendChild(this.createElement("p","Número de bits: "+subneteo.number_bits));
+                    elements.content_info.appendChild(this.createElement("p","Total de dispositivos: "+subneteo.number_devices));
+                    elements.content_info.appendChild(this.createElement("p","Submáscara: "+subneteo.netmask));
+                    elements.content_info.appendChild(this.createElement("p","Saltos de bits: "+subneteo.net_jump));
+                    elements.content_table.appendChild(table);
+                }
+            )
+        );
+        this.loadWindow(section,"Subneteo - "+ip);
     }
 
     createElement(type,value=null){
@@ -195,38 +230,3 @@ class App{
 
 App.load();
 var app=new App();
-
-function generateTable(){
-    this.content_table.innerHTML="";
-    this.subneteo.generateTable((columns,row,index)=>{
-        if(index==0){
-            let tr=this.createElement("tr");
-            for(let key in columns){
-                let column=columns[key];
-                let th=this.createElement("th",column);
-                tr.appendChild(th);
-                this.content_table.appendChild(tr);
-            }
-        }
-        let tr=this.createElement("tr");
-        let td_subred=this.createElement("td",row.subred);
-        let td_ip_red=this.createElement("td",row.ip_red.getAddress());
-        let td_ip_util_1=this.createElement("td",row.ip_util_1.getAddress());
-        let td_ip_util_2=this.createElement("td",row.ip_util_2.getAddress());
-        let td_ip_brodcast=this.createElement("td",row.ip_brodcast.getAddress());
-        tr.appendChild(td_subred);
-        tr.appendChild(td_ip_red);
-        tr.appendChild(td_ip_util_1);
-        tr.appendChild(td_ip_util_2);
-        tr.appendChild(td_ip_brodcast);
-        this.content_table.appendChild(tr);
-    });
-    this.content_info.innerHTML="";
-    this.content_info.appendChild(this.createElement("p","IP: "+this.subneteo.ip.getAddress()));
-    this.content_info.appendChild(this.createElement("p","Submáscara original: "+this.subneteo.ip.getNetMask()));
-    this.content_info.appendChild(this.createElement("p","Clasificación de red: "+this.subneteo.ip.getName()));
-    this.content_info.appendChild(this.createElement("p","Número de bits: "+this.subneteo.number_bits));
-    this.content_info.appendChild(this.createElement("p","Total de dispositivos: "+this.subneteo.number_devices));
-    this.content_info.appendChild(this.createElement("p","Submáscara: "+this.subneteo.netmask));
-    this.content_info.appendChild(this.createElement("p","Saltos de bits: "+this.subneteo.net_jump));
-}

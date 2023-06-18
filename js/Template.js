@@ -1,22 +1,22 @@
 class Template{
 
-    constructor(template,element,template_action=null,append=true){
+    constructor(template,element,params=null,append=true){
         this.template=template;
         this.element=element;
-        this.template_action=template_action;
+        this.params=params;
         this.append=append;
         this.loadTemplate();
     }
 
     loadTemplate(){
         let template=this.template.cloneNode(true);
-        if(this.template_action!=null){
+        if(this.params!=null){
             let elements={};
-            for(let id of this.template_action.ids){
+            for(let id of this.params.ids){
                 elements[id]=template.getElementById(id);
                 elements[id.replaceAll("-","_")]=elements[id];
             }
-            this.template_action.action(elements);
+            this.params.action(elements);
         }
         if(!this.append){
             this.element.innerHTML="";
@@ -30,7 +30,7 @@ class Template{
 
 }
 
-class TemplateAction{
+class TemplateElement{
 
     constructor(ids=[],action=null){
         this.ids=ids;

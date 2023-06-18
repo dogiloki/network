@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <title>Subneteo</title>
+    <title>Network</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <html>
@@ -9,11 +9,16 @@
     <template id="template-window">
         <section class="window" id="window">
             <div class="bar-title" id="bar-title">
-                <div class="title" id="title">Subneteos</div>
+                <div class="title" id="title">Network</div>
                 <div class="btn-close" id="btn-close">X</div>
             </div>
             <div class="frame" id="frame"></div>
         </section>
+    </template>
+
+    <template id="template-subneteo">
+        <div class="content-info" id="content-info"></div>
+        <div class="content-table" id="content-table"></div>
     </template>
 
     <button id="btn-save">Guardar</button>
@@ -26,7 +31,7 @@
         </label>
         <label>
             <span>Subredes</span>
-            <input type="number" name="subredes">
+            <input type="number" name="subnets">
         </label>
         <input type="submit" value="Agregar">
     </form>
