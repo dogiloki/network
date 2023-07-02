@@ -1,4 +1,4 @@
-class Interface{
+class Cli{
 
     constructor(){
         this.lines=[];

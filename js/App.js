@@ -232,3 +232,4 @@ class App{
 
 App.load();
 var app=new App();
+app.scenery=new Scenery();
